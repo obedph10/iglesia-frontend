@@ -1,0 +1,1 @@
+import{j as e}from"./index-B5-umki7.js";import{m as t}from"./Hero-DwI7hsOw.js";function d({children:o,className:r="",hover:i=!0}){return e.jsx(t.div,{initial:{opacity:0,y:20},whileInView:{opacity:1,y:0},viewport:{once:!0},whileHover:i?{y:-4}:void 0,className:`rounded-xl border border-gray-100 bg-white shadow-sm transition-shadow hover:shadow-md ${r}`,children:o})}export{d as C};
