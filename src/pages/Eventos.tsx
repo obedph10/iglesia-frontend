@@ -1,14 +1,15 @@
 import { Helmet } from "react-helmet-async";
 import { useQuery } from "@tanstack/react-query";
 import { Calendar, Clock, MapPin } from "lucide-react";
-import { motion } from "framer-motion";
 import Hero from "../components/ui/Hero";
 import Section from "../components/ui/Section";
 import Card from "../components/ui/Card";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
 import EmptyState from "../components/ui/EmptyState";
+import MediaCarousel from "../components/multimedia/MediaCarousel";
 import { getEvents } from "../services/events";
 import { formatDate } from "../utils/dateFormat";
+import type { Event } from "../types";
 
 export default function Eventos() {
   const { data: eventsData, isLoading } = useQuery({
@@ -37,20 +38,16 @@ export default function Eventos() {
             subtitle="Vuelve pronto para conocer nuestras actividades."
           />
         ) : (
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {events.map((event, i) => (
-              <motion.div
-                key={event.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-              >
+          <MediaCarousel
+            items={events}
+            renderItem={(event) => {
+              const e = event as Event;
+              return (
                 <Card hover={false}>
-                  {event.image ? (
+                  {e.image ? (
                     <img
-                      src={event.image}
-                      alt={event.title}
+                      src={e.image}
+                      alt={e.title}
                       className="h-48 w-full object-cover"
                       loading="lazy"
                     />
@@ -61,33 +58,33 @@ export default function Eventos() {
                   )}
                   <div className="p-5">
                     <span className="inline-block rounded-full bg-primary-50 px-3 py-1 text-xs font-medium capitalize text-primary-700">
-                      {event.category}
+                      {e.category}
                     </span>
-                    <h3 className="mt-3 text-lg font-semibold text-gray-900">{event.title}</h3>
-                    {event.description && (
-                      <p className="mt-2 line-clamp-2 text-sm text-gray-600">{event.description}</p>
+                    <h3 className="mt-3 text-lg font-semibold text-gray-900">{e.title}</h3>
+                    {e.description && (
+                      <p className="mt-2 line-clamp-2 text-sm text-gray-600">{e.description}</p>
                     )}
                     <div className="mt-4 space-y-2 border-t border-gray-100 pt-4 text-sm text-gray-500">
                       <div className="flex items-center gap-2">
                         <Calendar className="h-4 w-4 text-primary-500" />
-                        <span>{formatDate(event.date, "long")}</span>
+                        <span>{formatDate(e.date, "long")}</span>
                       </div>
-                      {event.time && (
+                      {e.time && (
                         <div className="flex items-center gap-2">
                           <Clock className="h-4 w-4 text-primary-500" />
-                          <span>{event.time}</span>
+                          <span>{e.time}</span>
                         </div>
                       )}
-                      {event.location && (
+                      {e.location && (
                         <div className="flex items-center gap-2">
                           <MapPin className="h-4 w-4 text-primary-500" />
-                          <span>{event.location}</span>
+                          <span>{e.location}</span>
                         </div>
                       )}
                     </div>
-                    {event.registration_link && (
+                    {e.registration_link && (
                       <a
-                        href={event.registration_link}
+                        href={e.registration_link}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="btn-primary mt-4 w-full"
@@ -97,9 +94,9 @@ export default function Eventos() {
                     )}
                   </div>
                 </Card>
-              </motion.div>
-            ))}
-          </div>
+              );
+            }}
+          />
         )}
       </Section>
     </>

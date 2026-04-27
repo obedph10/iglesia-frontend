@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
 import type { GalleryImage } from "../../types";
 
 interface PhotoGalleryProps {
@@ -28,30 +32,45 @@ export default function PhotoGallery({ images, className = "" }: PhotoGalleryPro
 
   return (
     <>
-      <div className={`columns-1 gap-4 sm:columns-2 lg:columns-3 ${className}`}>
-        {images.map((img, index) => (
-          <motion.div
-            key={img.id}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: index * 0.05 }}
-            className="mb-4 cursor-pointer break-inside-avoid overflow-hidden rounded-xl"
-            onClick={() => openLightbox(index)}
-          >
-            <img
-              src={img.image}
-              alt={img.title || "Galería"}
-              className="w-full object-cover transition-transform duration-300 hover:scale-105"
-              loading="lazy"
-            />
-            {img.title && (
-              <div className="bg-gray-50 px-4 py-2">
-                <p className="text-sm font-medium text-gray-700">{img.title}</p>
-              </div>
-            )}
-          </motion.div>
-        ))}
+      <div className={`relative overflow-visible ${className}`}>
+        <Swiper
+          modules={[Navigation]}
+          navigation={{ nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" }}
+          spaceBetween={16}
+          slidesPerView="auto"
+          className="!px-16"
+          onSlideChange={(swiper) => setCurrentIndex(swiper.activeIndex)}
+        >
+          {images.map((img, index) => (
+            <SwiperSlide key={img.id} style={{ width: "auto" }} className="!w-96">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.05 }}
+                className="relative flex h-full flex-col overflow-hidden rounded-xl cursor-pointer"
+                onClick={() => openLightbox(index)}
+              >
+                <div className="aspect-square overflow-hidden">
+                  <img
+                    src={img.image}
+                    alt={img.title || "Galería"}
+                    className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                    loading="lazy"
+                  />
+                </div>
+                {img.title && (
+                  <div className="bg-gray-50 px-4 py-2">
+                    <p className="text-sm font-medium text-gray-700">{img.title}</p>
+                  </div>
+                )}
+              </motion.div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+
+        <button className="swiper-button-prev !absolute left-4 top-1/2 -translate-y-1/2 text-primary-500 hover:text-primary-600 transition-colors !m-0 after:!text-4xl z-10" />
+        <button className="swiper-button-next !absolute right-4 top-1/2 -translate-y-1/2 text-primary-500 hover:text-primary-600 transition-colors !m-0 after:!text-4xl z-10" />
       </div>
 
       <AnimatePresence>

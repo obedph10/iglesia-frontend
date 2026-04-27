@@ -4,12 +4,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Clock, Send } from "lucide-react";
+import { Mail, Phone, MapPin, Clock, Send, AlertCircle } from "lucide-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Hero from "../components/ui/Hero";
 import Section from "../components/ui/Section";
 import Button from "../components/ui/Button";
 import { sendContactMessage, getSiteSettings } from "../services/contact";
+import { getErrorMessage } from "../utils/errorHandler";
 
 const contactSchema = z.object({
   name: z.string().min(2, "El nombre debe tener al menos 2 caracteres"),
@@ -149,8 +150,12 @@ export default function Contacto() {
               )}
 
               {mutation.isError && (
-                <div className="rounded-lg bg-red-50 p-4 text-sm text-red-700">
-                  Hubo un error al enviar el mensaje. Intenta de nuevo.
+                <div className="flex gap-3 rounded-lg bg-red-50 p-4 text-sm text-red-700">
+                  <AlertCircle className="h-5 w-5 shrink-0" />
+                  <div>
+                    <p className="font-medium">Error al enviar el mensaje</p>
+                    <p className="mt-1 text-red-600">{getErrorMessage(mutation.error)}</p>
+                  </div>
                 </div>
               )}
             </form>

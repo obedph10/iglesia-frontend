@@ -1,27 +1,30 @@
 import { Helmet } from "react-helmet-async";
 import { useQuery } from "@tanstack/react-query";
-import { Calendar, User } from "lucide-react";
+import { Calendar, User, AlertCircle } from "lucide-react";
 import Hero from "../components/ui/Hero";
 import Section from "../components/ui/Section";
 import Card from "../components/ui/Card";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
 import EmptyState from "../components/ui/EmptyState";
 import VideoPlayer from "../components/multimedia/VideoPlayer";
+import MediaCarousel from "../components/multimedia/MediaCarousel";
 import { getSermons, getSeries } from "../services/sermons";
 import { formatDate } from "../utils/dateFormat";
+import type { Sermon } from "../types";
 
 export default function Predicaciones() {
-  const { data: sermonsData, isLoading } = useQuery({
+  const { data: sermonsData, isLoading, isError: sermonsError, error: sermonsErrorObj } = useQuery({
     queryKey: ["sermons"],
     queryFn: () => getSermons({ ordering: "-date" }),
   });
 
-  const { data: series } = useQuery({
+  const { data: series, isError: seriesError } = useQuery({
     queryKey: ["series"],
     queryFn: getSeries,
   });
 
   const sermons = sermonsData?.results || [];
+  const errorMessage = sermonsErrorObj instanceof Error ? sermonsErrorObj.message : "Error al cargar predicaciones";
 
   return (
     <>
@@ -53,7 +56,13 @@ export default function Predicaciones() {
       )}
 
       <Section>
-        {isLoading ? (
+        {sermonsError ? (
+          <EmptyState
+            icon={<AlertCircle className="h-12 w-12 text-red-500" />}
+            title="Error al cargar predicaciones"
+            subtitle={errorMessage}
+          />
+        ) : isLoading ? (
           <LoadingSpinner />
         ) : sermons.length === 0 ? (
           <EmptyState
@@ -61,33 +70,37 @@ export default function Predicaciones() {
             title="Próximamente encontrarás aquí nuestras predicaciones."
           />
         ) : (
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {sermons.map((sermon) => (
-              <Card key={sermon.id}>
-                <VideoPlayer
-                  youtubeUrl={sermon.youtube_url}
-                  title={sermon.title}
-                  thumbnail={sermon.image || undefined}
-                />
-                <div className="p-5">
-                  <div className="flex items-center gap-2 text-sm text-primary-600">
-                    <User className="h-4 w-4" />
-                    <span className="font-medium">{sermon.speaker}</span>
+          <MediaCarousel
+            items={sermons}
+            renderItem={(sermon) => {
+              const s = sermon as Sermon;
+              return (
+                <Card>
+                  <VideoPlayer
+                    youtubeUrl={s.youtube_url}
+                    title={s.title}
+                    thumbnail={s.image || undefined}
+                  />
+                  <div className="p-5">
+                    <div className="flex items-center gap-2 text-sm text-primary-600">
+                      <User className="h-4 w-4" />
+                      <span className="font-medium">{s.speaker}</span>
+                    </div>
+                    <h3 className="mt-2 text-lg font-semibold text-gray-900">{s.title}</h3>
+                    {s.series_name && (
+                      <span className="mt-1 inline-block text-xs font-medium text-accent-600">
+                        {s.series_name}
+                      </span>
+                    )}
+                    <div className="mt-3 flex items-center gap-1.5 text-sm text-gray-500">
+                      <Calendar className="h-4 w-4" />
+                      <span>{formatDate(s.date)}</span>
+                    </div>
                   </div>
-                  <h3 className="mt-2 text-lg font-semibold text-gray-900">{sermon.title}</h3>
-                  {sermon.series_name && (
-                    <span className="mt-1 inline-block text-xs font-medium text-accent-600">
-                      {sermon.series_name}
-                    </span>
-                  )}
-                  <div className="mt-3 flex items-center gap-1.5 text-sm text-gray-500">
-                    <Calendar className="h-4 w-4" />
-                    <span>{formatDate(sermon.date)}</span>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
+                </Card>
+              );
+            }}
+          />
         )}
       </Section>
     </>
