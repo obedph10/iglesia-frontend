@@ -1,0 +1,20 @@
+version: '3.9'
+
+services:
+  frontend:
+    build:
+      context: .
+      target: development
+    container_name: iglesia_frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      VITE_API_URL: http://localhost:8000/api
+    command: npm run dev -- --host 0.0.0.0
+
+networks:
+  default:
+    name: iglesia_network
