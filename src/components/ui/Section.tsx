@@ -21,7 +21,7 @@ export default function Section({
   return (
     <section
       id={id}
-      className={`section-padding ${dark ? "bg-gray-900 text-white" : "bg-white"} ${className}`}
+      className={`section-padding ${dark ? "bg-primary-900 text-white" : "bg-white"} ${className}`}
     >
       <div className="container-page">
         {(title || subtitle) && (
@@ -37,7 +37,7 @@ export default function Section({
               </h2>
             )}
             {subtitle && (
-              <p className={`mt-4 text-lg ${dark ? "text-gray-300" : "text-gray-600"}`}>
+              <p className={`mt-4 text-lg ${dark ? "text-primary-200" : "text-gray-600"}`}>
                 {subtitle}
               </p>
             )}

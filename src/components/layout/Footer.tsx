@@ -136,12 +136,7 @@ export default function Footer() {
             &copy; {year} Iglesia Cristiana La Roca. Todos los derechos reservados.
           </p>
           <div className="flex gap-4 text-sm text-gray-500">
-            <Link to="#" className="transition-colors hover:text-white">
-              Privacidad
-            </Link>
-            <Link to="#" className="transition-colors hover:text-white">
-              Términos
-            </Link>
+            <span className="italic text-primary-400">Un encuentro con Dios</span>
           </div>
         </div>
       </div>

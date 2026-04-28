@@ -54,9 +54,9 @@ export default function VisionMision() {
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="rounded-2xl border border-accent-100 bg-accent-50/50 p-8 lg:p-10"
+              className="rounded-2xl border border-cta-100 bg-cta-50/50 p-8 lg:p-10"
             >
-              <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-xl bg-accent-600 text-white">
+              <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-xl bg-cta-500 text-white">
                 <Target className="h-8 w-8" />
               </div>
               <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">Misión</h2>
@@ -83,7 +83,7 @@ export default function VisionMision() {
         </div>
       </section>
 
-      <section className="bg-gray-900 py-20 text-white">
+      <section className="bg-primary-900 py-20 text-white">
         <div className="container-page text-center">
           <motion.p
             initial={{ opacity: 0, y: 20 }}

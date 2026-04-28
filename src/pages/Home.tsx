@@ -74,23 +74,31 @@ export default function Home() {
 
       <Section title="Nuestro Propósito" subtitle="En La Roca encontramos un hogar espiritual donde crecer juntos.">
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {features.map((f, i) => (
-            <motion.div
-              key={f.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.3 }}
-              whileHover={{ scale: 1.02 }}
-              className="group rounded-2xl border border-gray-100 bg-white p-6 text-center shadow-sm transition-all hover:shadow-md hover:-translate-y-1"
-            >
-              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-primary-50 text-primary-600 group-hover:bg-primary-600 group-hover:text-white transition-colors">
-                <f.icon className="h-7 w-7" />
-              </div>
-              <h3 className="mb-2 text-lg font-semibold text-gray-900">{f.title}</h3>
-              <p className="text-sm text-gray-600">{f.desc}</p>
-            </motion.div>
-          ))}
+          {features.map((f, i) => {
+            const iconColors = [
+              "bg-primary-50 text-primary-600 group-hover:bg-primary-600 group-hover:text-white",
+              "bg-secondary-50 text-secondary-600 group-hover:bg-secondary-600 group-hover:text-white",
+              "bg-cta-50 text-cta-500 group-hover:bg-cta-500 group-hover:text-white",
+              "bg-section-100 text-section-600 group-hover:bg-section-600 group-hover:text-white",
+            ];
+            return (
+              <motion.div
+                key={f.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.3 }}
+                whileHover={{ scale: 1.02 }}
+                className="group rounded-2xl border border-gray-100 bg-white p-6 text-center shadow-sm transition-all hover:shadow-md hover:-translate-y-1"
+              >
+                <div className={`mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-xl transition-colors ${iconColors[i]}`}>
+                  <f.icon className="h-7 w-7" />
+                </div>
+                <h3 className="mb-2 text-lg font-semibold text-gray-900">{f.title}</h3>
+                <p className="text-sm text-gray-600">{f.desc}</p>
+              </motion.div>
+            );
+          })}
         </div>
       </Section>
 
@@ -166,7 +174,7 @@ export default function Home() {
                     />
                   )}
                   <div className="p-5">
-                    <span className="inline-block rounded-full bg-primary-50 px-3 py-1 text-xs font-medium text-primary-700 capitalize">
+                    <span className="inline-block rounded-full bg-primary-50 px-3 py-1 text-xs font-medium text-primary-900 capitalize">
                       {event.category}
                     </span>
                     <h3 className="mt-2 text-lg font-semibold text-gray-900">{event.title}</h3>

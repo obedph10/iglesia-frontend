@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import type { ReactNode } from "react";
 
@@ -19,6 +19,7 @@ export default function Hero({
   videoUrl,
   size = "md",
 }: HeroProps) {
+  const reducedMotion = useReducedMotion();
   const heights = {
     sm: "min-h-[40vh]",
     md: "min-h-[60vh]",
@@ -82,7 +83,7 @@ export default function Hero({
         )}
       </div>
 
-      {size === "lg" && (
+      {size === "lg" && !reducedMotion && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1, y: [0, 8, 0] }}

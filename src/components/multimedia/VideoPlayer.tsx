@@ -34,7 +34,7 @@ export default function VideoPlayer({ youtubeUrl, title, thumbnail, className = 
             onClick={() => setPlaying(true)}
           >
             <img
-              src={thumbnail || `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
+              src={thumbnail || `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`}
               alt={title || "Video thumbnail"}
               className="h-full w-full object-cover"
               loading="lazy"

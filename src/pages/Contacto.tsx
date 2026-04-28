@@ -76,59 +76,78 @@ export default function Contacto() {
               Cuéntanos cómo podemos orar por ti o si tienes alguna pregunta.
             </p>
 
-            <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-5">
+            <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-5" noValidate>
+              <div aria-live="polite" aria-atomic="true" className="sr-only">
+                {mutation.isSuccess && "Mensaje enviado con éxito. Te responderemos pronto."}
+                {mutation.isError && "Error al enviar el mensaje. Por favor intenta de nuevo."}
+              </div>
+
               <div>
-                <label className="form-label">Nombre *</label>
+                <label htmlFor="contact-name" className="form-label">Nombre *</label>
                 <input
+                  id="contact-name"
                   {...register("name")}
                   className="form-input"
                   placeholder="Tu nombre"
+                  autoComplete="name"
                 />
-                {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>}
+                {errors.name && <p role="alert" className="mt-1 text-sm text-red-700">{errors.name.message}</p>}
               </div>
 
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
-                  <label className="form-label">Email *</label>
+                  <label htmlFor="contact-email" className="form-label">Email *</label>
                   <input
+                    id="contact-email"
                     {...register("email")}
                     type="email"
                     className="form-input"
                     placeholder="tu@email.com"
+                    autoComplete="email"
                   />
-                  {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
+                  {errors.email && <p role="alert" className="mt-1 text-sm text-red-700">{errors.email.message}</p>}
                 </div>
                 <div>
-                  <label className="form-label">Teléfono</label>
+                  <label htmlFor="contact-phone" className="form-label">Teléfono</label>
                   <input
+                    id="contact-phone"
                     {...register("phone")}
+                    type="tel"
                     className="form-input"
                     placeholder={siteSettings?.phone || "+57 300 000 0000"}
+                    autoComplete="tel"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="form-label">Asunto *</label>
+                <label htmlFor="contact-subject" className="form-label">Asunto *</label>
                 <input
+                  id="contact-subject"
                   {...register("subject")}
                   className="form-input"
                   placeholder="¿Sobre qué deseas contactarnos?"
                 />
-                {errors.subject && <p className="mt-1 text-sm text-red-600">{errors.subject.message}</p>}
+                {errors.subject && <p role="alert" className="mt-1 text-sm text-red-700">{errors.subject.message}</p>}
               </div>
 
               <div>
-                <label className="form-label">Mensaje *</label>
+                <label htmlFor="contact-message" className="form-label">Mensaje *</label>
                 <textarea
+                  id="contact-message"
                   {...register("message")}
                   className="form-input"
                   placeholder="Escribe tu mensaje aquí..."
                 />
-                {errors.message && <p className="mt-1 text-sm text-red-600">{errors.message.message}</p>}
+                {errors.message && <p role="alert" className="mt-1 text-sm text-red-700">{errors.message.message}</p>}
               </div>
 
-              <Button type="submit" disabled={mutation.isPending} className="w-full sm:w-auto">
+              <Button
+                type="submit"
+                disabled={mutation.isPending}
+                aria-busy={mutation.isPending}
+                className="w-full sm:w-auto"
+              >
                 {mutation.isPending ? (
                   <div className="flex items-center gap-2">
                     <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
@@ -143,17 +162,17 @@ export default function Contacto() {
               </Button>
 
               {mutation.isSuccess && (
-                <div className="rounded-lg bg-green-50 p-4 text-sm text-green-700">
+                <div role="status" className="rounded-lg bg-green-50 p-4 text-sm text-green-800 border border-green-200">
                   Mensaje enviado con éxito. Te responderemos pronto.
                 </div>
               )}
 
               {mutation.isError && (
-                <div className="flex gap-3 rounded-lg bg-red-50 p-4 text-sm text-red-700">
+                <div role="alert" className="flex gap-3 rounded-lg bg-red-50 p-4 text-sm text-red-800 border border-red-200">
                   <AlertCircle className="h-5 w-5 shrink-0" />
                   <div>
                     <p className="font-medium">Error al enviar el mensaje</p>
-                    <p className="mt-1 text-red-600">{getErrorMessage(mutation.error)}</p>
+                    <p className="mt-1">{getErrorMessage(mutation.error)}</p>
                   </div>
                 </div>
               )}

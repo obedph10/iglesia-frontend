@@ -79,4 +79,15 @@
   textarea.form-input {
     @apply resize-none min-h-[120px];
   }
+
+  /* Brand section divider accent — use on section borders */
+  .brand-divider {
+    @apply border-t-2 border-section-300;
+  }
+
+  /* Screen-reader only utility */
+  .sr-only {
+    @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+    clip: rect(0,0,0,0);
+  }
 }

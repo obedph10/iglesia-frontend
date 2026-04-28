@@ -37,11 +37,15 @@ export default function PhotoGallery({ images, className = "" }: PhotoGalleryPro
           modules={[Navigation]}
           navigation={{ nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" }}
           spaceBetween={16}
-          slidesPerView="auto"
-          className="!px-16"
+          slidesPerView={1}
+          breakpoints={{
+            640: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 },
+          }}
+          className="!px-8 sm:!px-12"
         >
           {images.map((img, index) => (
-            <SwiperSlide key={img.id} style={{ width: "auto" }} className="!w-96">
+            <SwiperSlide key={img.id}>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -68,8 +72,8 @@ export default function PhotoGallery({ images, className = "" }: PhotoGalleryPro
           ))}
         </Swiper>
 
-        <button className="swiper-button-prev !absolute left-4 top-1/2 -translate-y-1/2 text-primary-500 hover:text-primary-600 transition-colors !m-0 after:!text-2xl z-10" />
-        <button className="swiper-button-next !absolute right-4 top-1/2 -translate-y-1/2 text-primary-500 hover:text-primary-600 transition-colors !m-0 after:!text-2xl z-10" />
+        <button className="swiper-button-prev !absolute left-0 top-1/2 -translate-y-1/2 text-primary-500 hover:text-primary-600 transition-colors !m-0 after:!text-2xl z-10" aria-label="Anterior" />
+        <button className="swiper-button-next !absolute right-0 top-1/2 -translate-y-1/2 text-primary-500 hover:text-primary-600 transition-colors !m-0 after:!text-2xl z-10" aria-label="Siguiente" />
       </div>
 
       <AnimatePresence>
@@ -114,6 +118,7 @@ export default function PhotoGallery({ images, className = "" }: PhotoGalleryPro
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ duration: 0.25 }}
               src={images[selectedIndex].image}
               alt={images[selectedIndex].title || "Galería"}
               className="max-h-[85vh] max-w-full rounded-lg object-contain"
