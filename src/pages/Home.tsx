@@ -1,12 +1,14 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, Heart, Users, Cross, HelpingHand } from "lucide-react";
+import { ArrowRight, Heart, Users, Cross, HelpingHand, AlertCircle, Calendar } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { Helmet } from "react-helmet-async";
 import Hero from "../components/ui/Hero";
 import Section from "../components/ui/Section";
 import Card from "../components/ui/Card";
 import Button from "../components/ui/Button";
+import LoadingSpinner from "../components/ui/LoadingSpinner";
+import EmptyState from "../components/ui/EmptyState";
 import VideoPlayer from "../components/multimedia/VideoPlayer";
 import { getSermons } from "../services/sermons";
 import { getEvents } from "../services/events";
@@ -41,12 +43,12 @@ export default function Home() {
     },
   ];
 
-  const { data: sermonsData } = useQuery({
+  const { data: sermonsData, isLoading: sermonsLoading, isError: sermonsError } = useQuery({
     queryKey: ["sermons-home"],
     queryFn: () => getSermons({ ordering: "-date" }),
   });
 
-  const { data: eventsData } = useQuery({
+  const { data: eventsData, isLoading: eventsLoading, isError: eventsError } = useQuery({
     queryKey: ["events-home"],
     queryFn: () => getEvents({ featured: "true" }),
   });
@@ -67,7 +69,7 @@ export default function Home() {
         size="lg"
       >
         <Link to="/quienes-somos" className="btn-primary">Conócenos</Link>
-        <Link to="/predicaciones" className="btn-secondary bg-white/10 text-white border-white hover:bg-white/20">Predicaciones</Link>
+        <Link to="/predicaciones" className="btn-secondary bg-white/20 text-white border-white hover:bg-white/30">Predicaciones</Link>
       </Hero>
 
       <Section title="Nuestro Propósito" subtitle="En La Roca encontramos un hogar espiritual donde crecer juntos.">
@@ -78,7 +80,8 @@ export default function Home() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
+              transition={{ delay: i * 0.1, duration: 0.3 }}
+              whileHover={{ scale: 1.02 }}
               className="group rounded-2xl border border-gray-100 bg-white p-6 text-center shadow-sm transition-all hover:shadow-md hover:-translate-y-1"
             >
               <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-primary-50 text-primary-600 group-hover:bg-primary-600 group-hover:text-white transition-colors">
@@ -91,68 +94,102 @@ export default function Home() {
         </div>
       </Section>
 
-      {recentSermons.length > 0 && (
-        <Section title="Últimas Predicaciones" dark>
-          <div className="grid gap-8 md:grid-cols-3">
-            {recentSermons.map((sermon) => (
-              <Card key={sermon.id}>
-                <VideoPlayer
-                  youtubeUrl={sermon.youtube_url}
-                  title={sermon.title}
-                  thumbnail={sermon.image || undefined}
-                />
-                <div className="p-4">
-                  <p className="text-xs text-primary-600 font-medium">{sermon.speaker}</p>
-                  <h3 className="mt-1 font-semibold text-gray-900">{sermon.title}</h3>
-                </div>
-              </Card>
-            ))}
-          </div>
-          <div className="mt-10 text-center">
-            <Link to="/predicaciones" className="btn-secondary">
-              Ver todas las predicaciones <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
-          </div>
-        </Section>
-      )}
-
-      {featuredEvents.length > 0 && (
-        <Section title="Próximos Eventos" subtitle="No te pierdas nuestras actividades y encuentros.">
-          <div className="grid gap-8 md:grid-cols-3">
-            {featuredEvents.map((event) => (
-              <Card key={event.id}>
-                {event.image && (
-                  <img
-                    src={event.image}
-                    alt={event.title}
-                    className="h-48 w-full object-cover"
-                    loading="lazy"
+      <Section title="Últimas Predicaciones" dark>
+        {sermonsError ? (
+          <EmptyState
+            icon={<AlertCircle className="h-12 w-12 text-red-500" />}
+            title="Error al cargar predicaciones"
+            subtitle="Por favor intenta de nuevo más tarde"
+          />
+        ) : sermonsLoading ? (
+          <LoadingSpinner />
+        ) : recentSermons.length === 0 ? (
+          <EmptyState
+            icon={<Calendar className="h-12 w-12 text-gray-400" />}
+            title="Próximamente"
+            subtitle="Estamos preparando contenido emocionante para ti"
+          />
+        ) : (
+          <>
+            <div className="grid gap-8 md:grid-cols-3">
+              {recentSermons.map((sermon) => (
+                <Card key={sermon.id}>
+                  <VideoPlayer
+                    youtubeUrl={sermon.youtube_url}
+                    title={sermon.title}
+                    thumbnail={sermon.image || undefined}
                   />
-                )}
-                <div className="p-5">
-                  <span className="inline-block rounded-full bg-primary-50 px-3 py-1 text-xs font-medium text-primary-700 capitalize">
-                    {event.category}
-                  </span>
-                  <h3 className="mt-2 text-lg font-semibold text-gray-900">{event.title}</h3>
-                  <p className="mt-1 text-sm text-gray-500">
-                    {new Date(event.date).toLocaleDateString("es-ES", {
-                      weekday: "long",
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                    })}
-                  </p>
-                </div>
-              </Card>
-            ))}
-          </div>
-          <div className="mt-10 text-center">
-            <Link to="/eventos" className="btn-primary">
-              Ver todos los eventos <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
-          </div>
-        </Section>
-      )}
+                  <div className="p-4">
+                    <p className="text-xs text-primary-600 font-medium">{sermon.speaker}</p>
+                    <h3 className="mt-1 font-semibold text-gray-900">{sermon.title}</h3>
+                  </div>
+                </Card>
+              ))}
+            </div>
+            <div className="mt-10 text-center">
+              <Link to="/predicaciones" className="btn-secondary">
+                Ver todas las predicaciones <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </div>
+          </>
+        )}
+      </Section>
+
+      <Section title="Próximos Eventos" subtitle="No te pierdas nuestras actividades y encuentros.">
+        {eventsError ? (
+          <EmptyState
+            icon={<AlertCircle className="h-12 w-12 text-red-500" />}
+            title="Error al cargar eventos"
+            subtitle="Por favor intenta de nuevo más tarde"
+          />
+        ) : eventsLoading ? (
+          <LoadingSpinner />
+        ) : featuredEvents.length === 0 ? (
+          <EmptyState
+            icon={<Calendar className="h-12 w-12 text-gray-400" />}
+            title="Próximamente"
+            subtitle="Estamos organizando eventos especiales para ti"
+          />
+        ) : (
+          <>
+            <div className="grid gap-8 md:grid-cols-3">
+              {featuredEvents.map((event) => (
+                <Card key={event.id}>
+                  {event.image && (
+                    <img
+                      src={event.image}
+                      alt={event.title}
+                      className="aspect-video w-full object-cover"
+                      loading="lazy"
+                      width={400}
+                      height={300}
+                    />
+                  )}
+                  <div className="p-5">
+                    <span className="inline-block rounded-full bg-primary-50 px-3 py-1 text-xs font-medium text-primary-700 capitalize">
+                      {event.category}
+                    </span>
+                    <h3 className="mt-2 text-lg font-semibold text-gray-900">{event.title}</h3>
+                    <p className="mt-1 text-sm text-gray-500">
+                      {new Date(event.date).toLocaleDateString("es-ES", {
+                        weekday: "long",
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </p>
+                  </div>
+                </Card>
+              ))}
+            </div>
+            <div className="mt-10 text-center">
+              <Link to="/eventos" className="btn-primary">
+                Ver todos los eventos <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </div>
+          </>
+        )}
+      </Section>
 
       <Section
         title="Apoya Nuestra Misión"

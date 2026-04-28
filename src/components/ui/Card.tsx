@@ -13,6 +13,7 @@ export default function Card({ children, className = "", hover = true }: CardPro
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
+      transition={{ duration: 0.3 }}
       whileHover={hover ? { y: -4 } : undefined}
       className={`rounded-xl border border-gray-100 bg-white shadow-sm transition-shadow hover:shadow-md ${className}`}
     >

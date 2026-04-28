@@ -1,0 +1,1 @@
+import{j as t}from"./index-GCjd55ft.js";function x({icon:a,title:r,subtitle:e}){return t.jsxs("div",{className:"rounded-xl bg-gray-50 p-12 text-center",children:[t.jsx("div",{className:"mx-auto mb-4 h-12 w-12 text-gray-400",children:a}),t.jsx("p",{className:"text-lg text-gray-500",children:r}),e&&t.jsx("p",{className:"mt-2 text-gray-400",children:e})]})}export{x as E};

@@ -14,11 +14,11 @@ export default defineConfig({
     host: true,
     proxy: {
       "/api": {
-        target: "http://localhost",
+        target: "http://host.docker.internal:8000",
         changeOrigin: true,
       },
       "/admin": {
-        target: "http://localhost",
+        target: "http://host.docker.internal:8000",
         changeOrigin: true,
       },
     },
