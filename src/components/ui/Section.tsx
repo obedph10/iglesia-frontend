@@ -32,7 +32,7 @@ export default function Section({
             className="mx-auto mb-12 max-w-2xl text-center"
           >
             {title && (
-              <h2 className={`text-3xl font-bold sm:text-4xl ${dark ? "text-white" : "text-gray-900"}`}>
+              <h2 className={`text-2xl font-bold sm:text-3xl ${dark ? "text-white" : "text-gray-900"}`}>
                 {title}
               </h2>
             )}

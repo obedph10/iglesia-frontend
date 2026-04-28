@@ -28,6 +28,7 @@ export interface Sermon {
   series: number | null;
   series_name: string;
   series_detail?: Series;
+  order: number;
   created_at: string;
 }
 
@@ -42,7 +43,7 @@ export interface Event {
   image: string | null;
   category: string;
   registration_link: string;
-  featured: boolean;
+  order: number;
   created_at: string;
 }
 
@@ -61,7 +62,7 @@ export interface GalleryImage {
   image: string;
   category: number | null;
   category_name: string;
-  featured: boolean;
+  order: number;
   created_at: string;
 }
 

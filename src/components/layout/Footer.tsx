@@ -39,11 +39,14 @@ export default function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-300">
       <div className="container-page py-16">
-        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-8 sm:gap-12 sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <div className="mb-6 flex items-center">
               <ChurchLogo className="h-20 w-auto" color="#ffffff" />
             </div>
+            <p className="mb-3 text-sm font-semibold text-primary-300">
+              Un encuentro con Dios
+            </p>
             <p className="text-sm leading-relaxed text-gray-400">
               Iglesia Cristiana La Roca. Un lugar donde puedes encontrar esperanza, comunidad y el amor de Dios.
             </p>
@@ -116,10 +119,10 @@ export default function Footer() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-800 text-gray-400 transition-colors hover:bg-primary-600 hover:text-white"
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 text-gray-400 transition-colors hover:bg-primary-600 hover:text-white"
                   aria-label={social.label}
                 >
-                  <social.icon className="h-4 w-4" />
+                  <social.icon className="h-5 w-5" />
                 </a>
               ))}
             </div>

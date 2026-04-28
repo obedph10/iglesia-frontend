@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet-async";
 import { HelpingHand } from "lucide-react";
 import Hero from "../components/ui/Hero";
 import Section from "../components/ui/Section";
+import EmptyState from "../components/ui/EmptyState";
 
 export default function Alianzas() {
 
@@ -22,10 +23,11 @@ export default function Alianzas() {
         title="Nuestras Alianzas"
         subtitle="Colaboramos con organizaciones comprometidas con el bienestar social."
       >
-        <div className="rounded-xl bg-gray-50 p-12 text-center">
-          <HelpingHand className="mx-auto mb-4 h-12 w-12 text-gray-400" />
-          <p className="text-lg text-gray-500">Próximamente compartiremos nuestras alianzas y proyectos.</p>
-        </div>
+        <EmptyState
+          icon={<HelpingHand className="h-12 w-12 text-primary-500" />}
+          title="Próximamente"
+          subtitle="Compartiremos nuestras alianzas y proyectos."
+        />
       </Section>
     </>
   );

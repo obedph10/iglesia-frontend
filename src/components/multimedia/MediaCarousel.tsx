@@ -28,8 +28,8 @@ export default function MediaCarousel({ items, renderItem, className = "" }: Med
         ))}
       </Swiper>
 
-      <button className="swiper-button-prev !absolute left-4 top-1/2 -translate-y-1/2 text-primary-500 hover:text-primary-600 transition-colors !m-0 after:!text-4xl z-10" />
-      <button className="swiper-button-next !absolute right-4 top-1/2 -translate-y-1/2 text-primary-500 hover:text-primary-600 transition-colors !m-0 after:!text-4xl z-10" />
+      <button className="swiper-button-prev !absolute left-4 top-1/2 -translate-y-1/2 text-primary-500 hover:text-primary-600 transition-colors !m-0 after:!text-2xl z-10" />
+      <button className="swiper-button-next !absolute right-4 top-1/2 -translate-y-1/2 text-primary-500 hover:text-primary-600 transition-colors !m-0 after:!text-2xl z-10" />
     </div>
   );
 }

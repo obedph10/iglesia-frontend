@@ -78,10 +78,10 @@ export default function Contacto() {
 
             <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-5">
               <div>
-                <label className="block text-sm font-medium text-gray-700">Nombre *</label>
+                <label className="form-label">Nombre *</label>
                 <input
                   {...register("name")}
-                  className="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20"
+                  className="form-input"
                   placeholder="Tu nombre"
                 />
                 {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>}
@@ -89,41 +89,40 @@ export default function Contacto() {
 
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Email *</label>
+                  <label className="form-label">Email *</label>
                   <input
                     {...register("email")}
                     type="email"
-                    className="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20"
+                    className="form-input"
                     placeholder="tu@email.com"
                   />
                   {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Teléfono</label>
+                  <label className="form-label">Teléfono</label>
                   <input
                     {...register("phone")}
-                    className="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20"
+                    className="form-input"
                     placeholder={siteSettings?.phone || "+57 300 000 0000"}
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">Asunto *</label>
+                <label className="form-label">Asunto *</label>
                 <input
                   {...register("subject")}
-                  className="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20"
+                  className="form-input"
                   placeholder="¿Sobre qué deseas contactarnos?"
                 />
                 {errors.subject && <p className="mt-1 text-sm text-red-600">{errors.subject.message}</p>}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">Mensaje *</label>
+                <label className="form-label">Mensaje *</label>
                 <textarea
                   {...register("message")}
-                  rows={5}
-                  className="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20"
+                  className="form-input"
                   placeholder="Escribe tu mensaje aquí..."
                 />
                 {errors.message && <p className="mt-1 text-sm text-red-600">{errors.message.message}</p>}

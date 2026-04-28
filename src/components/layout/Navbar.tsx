@@ -40,7 +40,7 @@ export default function Navbar() {
               <Link
                 key={link.to}
                 to={link.to}
-                className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                className={`rounded-lg px-3 py-2 text-base font-medium transition-colors ${
                   location.pathname === link.to
                     ? "bg-primary-50 text-primary-700"
                     : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
@@ -59,7 +59,7 @@ export default function Navbar() {
                 key={link.to}
                 to={link.to}
                 onClick={() => setOpen(false)}
-                className={`block rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                className={`block rounded-lg px-3 py-2 text-base font-medium transition-colors ${
                   location.pathname === link.to
                     ? "bg-primary-50 text-primary-700"
                     : "text-gray-600 hover:bg-gray-50"

@@ -56,8 +56,8 @@ export default {
         }
       },
       fontFamily: {
-        sans: ["Outfit", "system-ui", "sans-serif"],
-        heading: ["Montserrat", "sans-serif"],
+        sans: ["Inter", "system-ui", "sans-serif"],
+        heading: ["Bebas Neue", "sans-serif"],
       },
     },
   },

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useQuery } from "@tanstack/react-query";
 import { Calendar, User, AlertCircle } from "lucide-react";
@@ -13,6 +14,8 @@ import { formatDate } from "../utils/dateFormat";
 import type { Sermon } from "../types";
 
 export default function Predicaciones() {
+  const [selectedSeries, setSelectedSeries] = useState<number | null>(null);
+
   const { data: sermonsData, isLoading, isError: sermonsError, error: sermonsErrorObj } = useQuery({
     queryKey: ["sermons"],
     queryFn: () => getSermons({ ordering: "-date" }),
@@ -24,6 +27,9 @@ export default function Predicaciones() {
   });
 
   const sermons = sermonsData?.results || [];
+  const filteredSermons = selectedSeries
+    ? sermons.filter(s => s.series === selectedSeries)
+    : sermons;
   const errorMessage = sermonsErrorObj instanceof Error ? sermonsErrorObj.message : "Error al cargar predicaciones";
 
   return (
@@ -39,16 +45,28 @@ export default function Predicaciones() {
         <section className="border-b border-gray-100 bg-gray-50 py-8">
           <div className="container-page">
             <div className="flex flex-wrap gap-3">
-              <span className="rounded-full bg-primary-600 px-4 py-1.5 text-sm font-medium text-white">
+              <button
+                onClick={() => setSelectedSeries(null)}
+                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+                  selectedSeries === null
+                    ? "bg-primary-600 text-white"
+                    : "bg-white text-gray-600 shadow-sm hover:bg-primary-50 hover:text-primary-700"
+                }`}
+              >
                 Todas
-              </span>
+              </button>
               {series.map((s) => (
-                <span
+                <button
                   key={s.id}
-                  className="cursor-pointer rounded-full bg-white px-4 py-1.5 text-sm font-medium text-gray-600 shadow-sm transition-colors hover:bg-primary-50 hover:text-primary-700"
+                  onClick={() => setSelectedSeries(s.id)}
+                  className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+                    selectedSeries === s.id
+                      ? "bg-primary-600 text-white"
+                      : "bg-white text-gray-600 shadow-sm hover:bg-primary-50 hover:text-primary-700"
+                  }`}
                 >
                   {s.name}
-                </span>
+                </button>
               ))}
             </div>
           </div>
@@ -64,14 +82,14 @@ export default function Predicaciones() {
           />
         ) : isLoading ? (
           <LoadingSpinner />
-        ) : sermons.length === 0 ? (
+        ) : filteredSermons.length === 0 ? (
           <EmptyState
             icon={<Calendar className="h-12 w-12" />}
-            title="Próximamente encontrarás aquí nuestras predicaciones."
+            title={selectedSeries ? "No hay predicaciones en esta serie." : "Próximamente encontrarás aquí nuestras predicaciones."}
           />
         ) : (
           <MediaCarousel
-            items={sermons}
+            items={filteredSermons}
             renderItem={(sermon) => {
               const s = sermon as Sermon;
               return (

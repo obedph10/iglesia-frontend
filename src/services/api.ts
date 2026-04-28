@@ -1,6 +1,17 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosRequestConfig, AxiosError } from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL || "/api";
+
+export class APIError extends Error {
+  constructor(
+    message: string,
+    public status?: number,
+    public data?: unknown,
+  ) {
+    super(message);
+    this.name = "APIError";
+  }
+}
 
 const api = axios.create({
   baseURL: API_URL,
@@ -8,6 +19,18 @@ const api = axios.create({
     "Content-Type": "application/json",
   },
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  (error: AxiosError) => {
+    const message = error.response?.statusText || error.message || "Error desconocido";
+    throw new APIError(
+      message,
+      error.response?.status,
+      error.response?.data,
+    );
+  },
+);
 
 export default api;
 

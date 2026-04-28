@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useQuery } from "@tanstack/react-query";
 import Hero from "../components/ui/Hero";
@@ -6,6 +7,8 @@ import PhotoGallery from "../components/multimedia/PhotoGallery";
 import { getGalleryImages, getGalleryCategories } from "../services/gallery";
 
 export default function Galeria() {
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+
   const { data: imagesData, isLoading } = useQuery({
     queryKey: ["gallery"],
     queryFn: () => getGalleryImages({}),
@@ -17,6 +20,9 @@ export default function Galeria() {
   });
 
   const images = imagesData?.results || [];
+  const filteredImages = selectedCategory
+    ? images.filter(img => img.category === selectedCategory)
+    : images;
 
   return (
     <>
@@ -31,16 +37,28 @@ export default function Galeria() {
         <section className="border-b border-gray-100 bg-gray-50 py-6">
           <div className="container-page">
             <div className="flex flex-wrap gap-2">
-              <span className="rounded-full bg-primary-600 px-4 py-1.5 text-sm font-medium text-white cursor-pointer">
+              <button
+                onClick={() => setSelectedCategory(null)}
+                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+                  selectedCategory === null
+                    ? "bg-primary-600 text-white"
+                    : "bg-white text-gray-600 shadow-sm hover:bg-primary-50 hover:text-primary-700"
+                }`}
+              >
                 Todas
-              </span>
+              </button>
               {categories.map((cat) => (
-                <span
+                <button
                   key={cat.id}
-                  className="cursor-pointer rounded-full bg-white px-4 py-1.5 text-sm font-medium text-gray-600 shadow-sm transition-colors hover:bg-primary-50 hover:text-primary-700"
+                  onClick={() => setSelectedCategory(cat.id)}
+                  className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+                    selectedCategory === cat.id
+                      ? "bg-primary-600 text-white"
+                      : "bg-white text-gray-600 shadow-sm hover:bg-primary-50 hover:text-primary-700"
+                  }`}
                 >
-                  {cat.name} ({cat.image_count})
-                </span>
+                  {cat.name} ({selectedCategory === cat.id ? filteredImages.length : cat.image_count})
+                </button>
               ))}
             </div>
           </div>
@@ -52,12 +70,12 @@ export default function Galeria() {
           <div className="flex justify-center py-20">
             <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary-600 border-t-transparent" />
           </div>
-        ) : images.length === 0 ? (
+        ) : filteredImages.length === 0 ? (
           <div className="rounded-xl bg-gray-50 p-12 text-center">
-            <p className="text-lg text-gray-500">Próximamente encontrarás aquí nuestras fotografías.</p>
+            <p className="text-lg text-gray-500">{selectedCategory ? "No hay fotografías en esta categoría." : "Próximamente encontrarás aquí nuestras fotografías."}</p>
           </div>
         ) : (
-          <PhotoGallery images={images} />
+          <PhotoGallery images={filteredImages} />
         )}
       </Section>
     </>

@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet-async";
 import { Heart } from "lucide-react";
 import Hero from "../components/ui/Hero";
 import Section from "../components/ui/Section";
+import EmptyState from "../components/ui/EmptyState";
 
 export default function Donaciones() {
 
@@ -14,7 +15,7 @@ export default function Donaciones() {
 
       <Hero title="Donaciones" subtitle="Tu generosidad transforma vidas y comunidades." size="sm" />
 
-      <section className="border-b border-gray-100 bg-gradient-to-r from-primary-600 to-primary-800 py-12 text-white">
+      <section className="border-b border-gray-100 bg-gradient-to-r from-primary-500 to-primary-700 py-12 text-white">
         <div className="container-page text-center">
           <Heart className="mx-auto mb-4 h-10 w-10 text-primary-200" />
           <p className="mx-auto max-w-2xl text-lg leading-relaxed text-primary-100">
@@ -30,9 +31,11 @@ export default function Donaciones() {
         title="Formas de Donar"
         subtitle="Ofrecemos diferentes opciones para que puedas contribuir."
       >
-        <div className="rounded-xl bg-gray-50 p-12 text-center">
-          <p className="text-lg text-gray-500">Próximamente encontrarás aquí las opciones para donar.</p>
-        </div>
+        <EmptyState
+          icon={<Heart className="h-12 w-12 text-primary-500" />}
+          title="Próximamente"
+          subtitle="Encontrarás aquí las opciones para donar."
+        />
       </Section>
     </>
   );

@@ -39,7 +39,6 @@ export default function PhotoGallery({ images, className = "" }: PhotoGalleryPro
           spaceBetween={16}
           slidesPerView="auto"
           className="!px-16"
-          onSlideChange={(swiper) => setCurrentIndex(swiper.activeIndex)}
         >
           {images.map((img, index) => (
             <SwiperSlide key={img.id} style={{ width: "auto" }} className="!w-96">
@@ -69,8 +68,8 @@ export default function PhotoGallery({ images, className = "" }: PhotoGalleryPro
           ))}
         </Swiper>
 
-        <button className="swiper-button-prev !absolute left-4 top-1/2 -translate-y-1/2 text-primary-500 hover:text-primary-600 transition-colors !m-0 after:!text-4xl z-10" />
-        <button className="swiper-button-next !absolute right-4 top-1/2 -translate-y-1/2 text-primary-500 hover:text-primary-600 transition-colors !m-0 after:!text-4xl z-10" />
+        <button className="swiper-button-prev !absolute left-4 top-1/2 -translate-y-1/2 text-primary-500 hover:text-primary-600 transition-colors !m-0 after:!text-2xl z-10" />
+        <button className="swiper-button-next !absolute right-4 top-1/2 -translate-y-1/2 text-primary-500 hover:text-primary-600 transition-colors !m-0 after:!text-2xl z-10" />
       </div>
 
       <AnimatePresence>

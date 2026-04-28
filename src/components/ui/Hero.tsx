@@ -64,7 +64,7 @@ export default function Hero({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="mx-auto mt-6 max-w-2xl text-lg text-gray-200 sm:text-xl"
+            className="mx-auto mt-6 max-w-2xl text-lg text-white/90 sm:text-xl"
           >
             {subtitle}
           </motion.p>
